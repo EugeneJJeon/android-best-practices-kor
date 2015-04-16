@@ -134,19 +134,17 @@ signingConfigs {
 }
 ```
 
-**Prefer Maven dependency resolution instead of importing jar files.** If you explicitly include jar files in your project, they will be of some specific frozen version, such as `2.1.1`. Downloading jars and handling updates is cumbersome, this is a problem that Maven solves properly, and is also encouraged in Android Gradle builds. You can specify a range of versions, such as `2.1.+` and Maven will handle the automatic update to the most recent version matching that pattern. Example:
+**Prefer Maven dependency resolution instead of importing jar files.** If you explicitly include jar files in your project, they will be of some specific frozen version, such as `2.1.1`. Downloading jars and handling updates is cumbersome, this is a problem that Maven solves properly, and is also encouraged in Android Gradle builds. For example:
 
 ```groovy
 dependencies {
-    compile 'com.netflix.rxjava:rxjava-core:0.19.+'
-    compile 'com.netflix.rxjava:rxjava-android:0.19.+'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.+'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.4.+'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.+'
-    compile 'com.squareup.okhttp:okhttp:2.0.+'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.+'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
 }
-```
+```    
+
+**Avoid Maven dynamic dependency resolution**
+Avoid the use of dynamically versioned, such as `2.1.+` as this may result in different in unstable builds or subtle, untracked differences in behavior between builds. The use of static versions such as `2.1.1` helps create a more stable, predictable and repeatable development environment.
 
 ### IDEs and text editors
 
@@ -172,7 +170,7 @@ If you have no previous experience with Rx, start by applying it only for respon
 
 ```groovy
 dependencies {
-    classpath 'me.tatarka:gradle-retrolambda:2.4.+'
+    classpath 'me.tatarka:gradle-retrolambda:2.4.1'
 }
 ```
 
@@ -382,6 +380,36 @@ Ask for this palette from the designer of the application. The names do not need
 
 You should use the `spacing_****` dimensions for layouting, in margins and paddings, instead of hard-coded values, much like strings are normally treated. This will give a consistent look-and-feel, while making it easier to organize and change styles and layouts.
 
+**strings.xml**
+
+Name your strings with keys that resemble namespaces, and don't be afraid of repeating a value for two or more keys. Languages are complex, so namespaces are necessary to bring context and break ambiguity.
+
+**Bad**
+```xml
+<string name="network_error">Network error</string>
+<string name="call_failed">Call failed</string>
+<string name="map_failed">Map loading failed</string>
+```
+
+**Good**
+```xml
+<string name="error.message.network">Network error</string>
+<string name="error.message.call">Call failed</string>
+<string name="error.message.map">Map loading failed</string>
+```
+
+Don't write string values in all uppercase. Stick to normal text conventions (e.g., capitalize first character). If you need to display the string in all caps, then do that using for instance the attribute [`textAllCaps`](http://developer.android.com/reference/android/widget/TextView.html#attr_android:textAllCaps) on a TextView.
+
+**Bad**
+```xml
+<string name="error.message.call">CALL FAILED</string>
+```
+
+**Good**
+```xml
+<string name="error.message.call">Call failed</string>
+```
+
 **Avoid a deep hierarchy of views.** Sometimes you might be tempted to just add yet another LinearLayout, to be able to accomplish an arrangement of views. This kind of situation may occur:
 
 ```xml
@@ -504,5 +532,5 @@ Antti Lammi, Joni Karppinen, Peter Tackage, Timo Tuominen, Vera Izrailit, Vihtor
 
 ### License
 
-[Futurice Oy](www.futurice.com)
+[Futurice Oy](http://www.futurice.com)
 Creative Commons Attribution 4.0 International (CC BY 4.0)
